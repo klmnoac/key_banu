@@ -15,3 +15,8 @@ document.getElementById("pasteBtn").addEventListener("click", async function () 
         alert("Failed to paste!");
     }
 });
+
+// New Tab (Ctrl+T) Button
+document.getElementById("newTabBtn").addEventListener("click", function () {
+    window.open("https://www.google.com", "_blank"); // Opens Google in a new tab
+});
