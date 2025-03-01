@@ -1,22 +1,25 @@
-document.getElementById("copyBtn").addEventListener("click", async function () {
-    try {
-        await navigator.clipboard.writeText("Copied Text!");
-        alert("Text copied!");
-    } catch (err) {
-        alert("Failed to copy!");
-    }
-});
+const ws = new WebSocket("ws://YOUR_PC_IP:8080"); // Change YOUR_PC_IP
 
-document.getElementById("pasteBtn").addEventListener("click", async function () {
-    try {
-        const text = await navigator.clipboard.readText();
-        alert("Pasted Text: " + text);
-    } catch (err) {
-        alert("Failed to paste!");
-    }
-});
+ws.onopen = function () {
+    console.log("Connected to PC WebSocket Server");
+};
 
-// New Tab (Ctrl+T) Button
-document.getElementById("newTabBtn").addEventListener("click", function () {
-    window.open("https://www.google.com", "_blank"); // Opens Google in a new tab
-});
+ws.onerror = function (error) {
+    console.log("WebSocket Error: " + error);
+};
+
+ws.onclose = function () {
+    console.log("Connection to PC lost");
+};
+
+// Function to send key commands
+function sendCommand(command) {
+    if (ws.readyState === WebSocket.OPEN) {
+        ws.send(command);
+    } else {
+        alert("Connection to PC is not active!");
+    }
+}
+
+// Add a new button for Ctrl+T
+document.getElementById("newTabBtn").addEventListener("click", () => sendCommand("CTRL_T"));
